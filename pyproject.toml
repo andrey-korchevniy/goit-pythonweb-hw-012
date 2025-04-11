@@ -18,8 +18,12 @@ pydantic-settings = "^2.8.1"
 python-jose = {extras = ["cryptography"], version = "^3.4.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 fastapi-mail = "^1.4.2"
+cloudinary = "^1.44.0"
 
     
+[tool.poetry.group.dev.dependencies]
+sphinx = "^8.2.3"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
