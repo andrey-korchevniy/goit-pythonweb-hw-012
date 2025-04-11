@@ -1,0 +1,25 @@
+[tool.poetry]
+package-mode = false
+name = "goit-pythonweb-hw-08"
+version = "0.1.0"
+description = "REST API for contact management"
+authors = ["Andrii Korchevnyi"]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+sqlalchemy = "^2.0.39"
+alembic = "^1.15.1"
+asyncpg = "^0.30.0"
+fastapi = "^0.115.0"
+uvicorn = "^0.30.0"
+pydantic = {extras = ["email"], version = "^2.7.3"}
+python-multipart = "^0.0.10"
+pydantic-settings = "^2.8.1"
+python-jose = {extras = ["cryptography"], version = "^3.4.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+fastapi-mail = "^1.4.2"
+
+    
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
