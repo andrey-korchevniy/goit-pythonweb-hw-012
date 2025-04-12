@@ -1,7 +1,7 @@
 """
-Основний модуль застосунку FastAPI для управління контактами.
+Main module of the FastAPI application for contact management.
 
-Цей модуль містить налаштування CORS та підключення роутерів API.
+This module contains CORS settings and API router connections.
 """
 
 from fastapi import FastAPI
@@ -33,10 +33,10 @@ app.include_router(users.router, prefix="/api")
 @app.get("/")
 async def root():
     """
-    Кореневий ендпоінт API.
+    Root API endpoint.
     
     Returns:
-        dict: Привітальне повідомлення та інструкції для користувача.
+        dict: Welcome message and instructions for the user.
     """
     return {"message": "Welcome to Contacts API! Go to /docs for documentation."}
 

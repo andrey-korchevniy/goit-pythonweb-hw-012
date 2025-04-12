@@ -1,53 +1,57 @@
 """
-Модуль схем для валідації даних.
+Data validation schemas module.
 
-Цей модуль містить класи Pydantic для валідації та серіалізації даних в API.
+This module contains Pydantic classes for data validation and serialization in the API.
 """
 
 from datetime import date
 from typing import Optional, List
 from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
+from src.database.models import UserRole
+
 # User schemas
 class UserBase(BaseModel):
     """
-    Базова модель користувача.
+    Base user model.
     
     Attributes:
-        username: Ім'я користувача.
-        email: Email користувача.
+        username: User's username.
+        email: User's email.
     """
     username: str = Field(min_length=2, max_length=50)
     email: EmailStr
 
 class UserCreate(UserBase):
     """
-    Модель для створення користувача.
+    Model for user creation.
     
     Attributes:
-        password: Пароль користувача.
+        password: User's password.
     """
     password: str = Field(min_length=6, max_length=100)
+    role: UserRole = Field(default=UserRole.USER)
 
 class UserResponse(UserBase):
     """
-    Модель для відповіді API з даними користувача.
+    Model for API response with user data.
     
     Attributes:
-        id: Ідентифікатор користувача.
-        avatar: URL аватару користувача.
+        id: User ID.
+        avatar: User's avatar URL.
     """
     id: int
     avatar: Optional[str] = None
+    role: UserRole
     
     model_config = ConfigDict(from_attributes=True)
 
 class UserInDB(UserBase):
     """
-    Модель користувача для зберігання в базі даних.
+    User model for database storage.
     
     Attributes:
-        hashed_password: Хешований пароль користувача.
+        hashed_password: User's hashed password.
     """
     hashed_password: str
     
@@ -56,46 +60,67 @@ class UserInDB(UserBase):
 # Email verification schema
 class RequestEmail(BaseModel):
     """
-    Модель для запиту верифікації email.
+    Model for email verification request.
     
     Attributes:
-        email: Email для верифікації.
+        email: Email for verification.
     """
     email: EmailStr
+
+# Password reset schemas
+class RequestPasswordReset(BaseModel):
+    """
+    Model for password reset request.
+    
+    Attributes:
+        email: User's email for password reset.
+    """
+    email: EmailStr
+
+class ResetPassword(BaseModel):
+    """
+    Model for password reset using a token.
+    
+    Attributes:
+        token: Password reset token.
+        password: User's new password.
+    """
+    token: str
+    password: str = Field(min_length=6, max_length=100)
 
 # Token schemas
 class Token(BaseModel):
     """
-    Модель токену автентифікації.
+    Authentication token model.
     
     Attributes:
-        access_token: Токен доступу.
-        token_type: Тип токену.
+        access_token: Access token.
+        token_type: Token type.
     """
     access_token: str
     token_type: str
 
 class TokenData(BaseModel):
     """
-    Дані, що містяться в токені.
+    Data contained in the token.
     
     Attributes:
-        username: Ім'я користувача.
+        username: Username.
     """
     username: Optional[str] = None
 
 # Contact schemas
 class ContactBase(BaseModel):
     """
-    Базова модель контакту.
+    Base contact model.
     
     Attributes:
-        name: Ім'я контакту.
-        surname: Прізвище контакту.
-        email: Email контакту.
-        phone: Телефон контакту.
-        birthday: Дата народження контакту.
-        additional_data: Додаткова інформація про контакт.
+        name: Contact's first name.
+        surname: Contact's last name.
+        email: Contact's email.
+        phone: Contact's phone number.
+        birthday: Contact's birth date.
+        additional_data: Additional information about the contact.
     """
     name: str = Field(max_length=50)
     surname: str = Field(max_length=50)
@@ -106,15 +131,15 @@ class ContactBase(BaseModel):
 
 class ContactModel(ContactBase):
     """
-    Модель для створення контакту.
+    Model for contact creation.
     """
     pass
 
 class ContactUpdate(ContactBase):
     """
-    Модель для оновлення контакту.
+    Model for contact update.
     
-    Всі поля є необов'язковими для дозволу часткового оновлення.
+    All fields are optional to allow partial updates.
     """
     name: Optional[str] = Field(default=None, max_length=50)
     surname: Optional[str] = Field(default=None, max_length=50)
@@ -125,11 +150,11 @@ class ContactUpdate(ContactBase):
 
 class ContactResponse(ContactBase):
     """
-    Модель для відповіді API з даними контакту.
+    Model for API response with contact data.
     
     Attributes:
-        id: Ідентифікатор контакту.
-        user_id: Ідентифікатор користувача, якому належить контакт.
+        id: Contact ID.
+        user_id: ID of the user who owns the contact.
     """
     id: int
     user_id: int

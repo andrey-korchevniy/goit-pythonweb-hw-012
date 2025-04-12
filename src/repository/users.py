@@ -9,7 +9,7 @@ from typing import List, Optional
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database.models import User
+from src.database.models import User, UserRole
 from src.schemas import UserCreate
 
 class UserRepository:
@@ -95,7 +95,8 @@ class UserRepository:
         user = User(
             username=user_data.username,
             email=user_data.email,
-            hashed_password=user_data.password
+            hashed_password=user_data.password,
+            role=user_data.role
         )
         self.db.add(user)
         await self.db.commit()
@@ -129,6 +130,23 @@ class UserRepository:
         """
         user = await self.get_user_by_email(email)
         user.avatar = url
+        await self.db.commit()
+        await self.db.refresh(user)
+        return user
+        
+    async def update_password(self, email: str, hashed_password: str) -> User:
+        """
+        Оновлення пароля користувача.
+        
+        Args:
+            email: Email користувача.
+            hashed_password: Новий хешований пароль.
+            
+        Returns:
+            Оновлений користувач.
+        """
+        user = await self.get_user_by_email(email)
+        user.hashed_password = hashed_password
         await self.db.commit()
         await self.db.refresh(user)
         return user 

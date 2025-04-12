@@ -19,10 +19,16 @@ python-jose = {extras = ["cryptography"], version = "^3.4.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 fastapi-mail = "^1.4.2"
 cloudinary = "^1.44.0"
+redis = "^5.0.1"
 
     
 [tool.poetry.group.dev.dependencies]
 sphinx = "^8.2.3"
+pytest = "^8.3.5"
+pytest-asyncio = "^0.26.0"
+pytest-cov = "^6.1.1"
+httpx = "^0.28.1"
+aiosqlite = "^0.21.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     CLD_NAME: str
     CLD_API_KEY: int
     CLD_API_SECRET: str
+    
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_USER_TTL: int = 3600  # User cache lifetime
 
     model_config = ConfigDict(
         extra="ignore", env_file=".env", env_file_encoding="utf-8", case_sensitive=True

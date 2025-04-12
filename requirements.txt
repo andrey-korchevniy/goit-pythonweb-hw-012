@@ -10,4 +10,5 @@ passlib==1.7.4
 bcrypt==4.3.0
 python-multipart==0.0.6
 fastapi-mail==1.4.1
-cloudinary==1.43.0 
+cloudinary==1.43.0
+redis==5.0.1 
